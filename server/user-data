@@ -1,0 +1,163 @@
+#cloud-config
+autoinstall:
+  apt:
+    disable_components: []
+    geoip: false
+    preserve_sources_list: false
+    primary:
+    - arches:
+      - amd64
+      - i386
+      uri: http://jp.archive.ubuntu.com/ubuntu
+    - arches:
+      - default
+      uri: http://ports.ubuntu.com/ubuntu-ports
+  packages:
+    - ubuntu-desktop-minimal
+  drivers:
+    install: false
+  identity:
+    hostname: lykaoni-server
+    password: $6$AtwTvF6iwTBudyMy$XNMK0uToLIycRj1in41cvrpbu3oHKVuExclRK9bI5ULEKMLobW8rOiu3bIgPEtQAvP.ysupzd.O5oha5eggle/
+    realname: LYKAONi
+    username: lykaon
+  kernel:
+    package: linux-generic
+  keyboard:
+    layout: jp
+    toggle: null
+    variant: ''
+  locale: ja_JP.UTF-8
+  network:
+    ethernets:
+      eno1:
+        dhcp4: true
+    version: 2
+  ssh:
+    allow-pw: true
+    authorized-keys: []
+    install-server: false
+  storage:
+    grub:
+      reorder_uefi: false
+    config:
+    - ptable: gpt
+      path: /dev/sda
+      wipe: superblock
+      preserve: false
+      name: ''
+      grub_device: false
+      type: disk
+      match:
+        size: smallest
+      id: disk-sda
+    - device: disk-sda
+      size: 1127219200
+      wipe: superblock
+      flag: boot
+      number: 1
+      preserve: false
+      grub_device: true
+      type: partition
+      id: partition-0
+    - fstype: fat32
+      volume: partition-0
+      preserve: false
+      type: format
+      id: format-0
+    - device: disk-sda
+      size: 2147483648
+      wipe: superblock
+      flag: ''
+      number: 2
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-1
+    - fstype: ext4
+      volume: partition-1
+      preserve: false
+      type: format
+      id: format-1
+    - device: disk-sda
+      size: 496831037440
+      wipe: superblock
+      flag: ''
+      number: 3
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-2
+    - name: ubuntu-vg
+      devices:
+      - partition-2
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: ubuntu-lv
+      volgroup: lvm_volgroup-0
+      size: 496827891712B
+      wipe: superblock
+      preserve: false
+      type: lvm_partition
+      id: lvm_partition-0
+    - fstype: ext4
+      volume: lvm_partition-0
+      preserve: false
+      type: format
+      id: format-4
+    - path: /
+      device: format-4
+      type: mount
+      id: mount-4
+    - path: /boot
+      device: format-1
+      type: mount
+      id: mount-1
+    - path: /boot/efi
+      device: format-0
+      type: mount
+      id: mount-0
+    - ptable: gpt
+      path: /dev/sdb
+      preserve: true
+      name: ''
+      grub_device: false
+      type: disk
+      match:
+        size: largest
+      id: disk-sdb
+    - device: disk-sdb
+      size: 2000396746752
+      flag: linux
+      number: 1
+      preserve: true
+      grub_device: false
+      type: partition
+      id: partition-sdb1
+    - name: ubuntu-vg1
+      devices:
+      - partition-sdb1
+      preserve: true
+      type: lvm_volgroup
+      id: lvm-volgroup-ubuntu-vg1
+    - name: ubuntu-lv1
+      volgroup: lvm-volgroup-ubuntu-vg1
+      size: 2000393601024B
+      wipe: superblock
+      preserve: true
+      type: lvm_partition
+      id: lvm-partition-ubuntu-lv1
+    - fstype: ext4
+      volume: lvm-partition-ubuntu-lv1
+      preserve: false
+      type: format
+      id: format-3
+    - path: /dbdata
+      device: format-3
+      type: mount
+      id: mount-3
+  updates: security
+  user-data:
+    timezone: Asia/Tokyo
+  version: 1
