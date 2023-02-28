@@ -215,4 +215,5 @@ autoinstall:
     timezone: Asia/Tokyo
   late-commands:
     - curtin in-target --target=/target -- apt install -y gnome-getting-started-docs-ja gnome-user-docs-ja
+    - curtin in-target --target=/target -- echo -e "[keyfile]\nunmanaged-devices=none" > /target/etc/NetworkManager/conf.d/10-globally-managed-devices.conf
   version: 1
