@@ -64,9 +64,12 @@ autoinstall:
           2NT8FkchOHMEKNekAKDAAEjngQVLN8L+zOl+Xe4G4lkDFw==
           =5/aI
           -----END PGP PUBLIC KEY BLOCK-----
+      ansible-ppa:
+        source: ppa:ansible/ansible
   packages:
     - ubuntu-desktop-minimal
     - ubuntu-defaults-ja
+    - ansible
   drivers:
     install: false
   identity:
